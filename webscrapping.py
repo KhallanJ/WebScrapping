@@ -60,20 +60,37 @@ class WebScrapping:
 
         
         def sentence_search():
-            word = input("What word are you looking for? ")
+            query = input("Type Your Question Here: ")
+            print("\n")
+            query_words = query.lower().split()
+            
             # Splits the text into chunks, split by periods
+            # text = text.replace("!", ".").replace("?", ",")
             sentences = text.split(".")
+            
+            results = []
+            for sentence in sentences:
+                score = 0
+                
+                for word in query_words:
+                    if word in sentence.lower():
+                        score += 1   
+                        
+                if score > 0:
+                    results.append((sentence, score))
+                
+            results.sort(key=lambda x: x[1], reverse=True)
+            
+            for result in results[:3]:
+                print(result[0], " | score:", result[1])
+            
+                    
     
-            # Then searches each and every sentence (s) in sentences array and looks for the word
-            # if it appears it prints it
-            for s in sentences:
-                if word in s.lower():
-                    print(s.strip(),".")
-        
+
         while True:
             print("\n1. Check word frequency")
             print("2. Check if word exists")
-            print("3. Show sentences containing word")
+            print("3. Ask A Question")
             print("4. Exit")
                         
             choice = input("\nChoose Option: ")
