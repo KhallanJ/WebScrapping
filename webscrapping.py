@@ -71,20 +71,24 @@ class WebScrapping:
             results = []
             ignore_words = ["a", "the", "with", "of", "i", "this", "that", "to", "and", "an", "is", "what"]
             for sentence in sentences_words:
-                score = 0
+                matches = 0
                 for word in query_words:
                     if word in ignore_words:
-                        continue
-                    elif word in sentence.split():
-                        score += 1   
+                        len(query_words) - 1
+                    elif words in sentence.split():
+                        matches += 1 
                         
+                          
+                score = matches / len(query_words)
+       
                 if score > 0:
                     results.append((sentence, score))
                 
             results.sort(key=lambda x: x[1], reverse=True)
             
-            if score == 0:
-                    print("Error 404: Does not exist\n")
+            
+            if not results:
+                print("Error 404: Does not exist\n")
                     
             for result in results[:3]:
                 print("\"", result[0], "\"", "\tScore:", result[1], "\n")
