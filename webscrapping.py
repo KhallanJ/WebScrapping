@@ -59,7 +59,7 @@ class WebScrapping:
                 print(f"\nNo. The word \"{word}\" does NOT exist in the website")
 
         
-        def sentence_search():
+        def queryLookUp():
             query = input("Type Your Question Here: ")
             print("\n")
             query_words = query.lower().split()
@@ -69,11 +69,13 @@ class WebScrapping:
             sentences = clean_punctuation.split(".")
             
             results = []
+            ignore_words = ["a", "the", "with", "of", "i", "this", "that", "to", "and", "an", "is", "what"]
             for sentence in sentences:
                 score = 0
-                
                 for word in query_words:
-                    if word in sentence.lower():
+                    if word in ignore_words:
+                        pass
+                    elif word in sentence.lower():
                         score += 1   
                         
                 if score > 0:
@@ -100,7 +102,7 @@ class WebScrapping:
             elif choice == "2":
                 check_exsistacne()
             elif choice == "3":
-                sentence_search()
+                queryLookUp()
             else:
                 break
             
