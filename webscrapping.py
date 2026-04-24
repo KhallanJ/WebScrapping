@@ -65,8 +65,8 @@ class WebScrapping:
             query_words = query.lower().split()
             
             # Splits the text into chunks, split by periods
-            # text = text.replace("!", ".").replace("?", ",")
-            sentences = text.split(".")
+            clean_punctuation = text.replace("!", ".").replace("?", ".").replace(",", ".")
+            sentences = clean_punctuation.split(".")
             
             results = []
             for sentence in sentences:
@@ -82,7 +82,7 @@ class WebScrapping:
             results.sort(key=lambda x: x[1], reverse=True)
             
             for result in results[:3]:
-                print(result[0], " | score:", result[1])
+                print("\"", result[0], "\"", "\tScore:", result[1], "\n")
             
                     
     
@@ -102,7 +102,7 @@ class WebScrapping:
             elif choice == "3":
                 sentence_search()
             else:
-                break;
+                break
             
 if __name__ == "__main__":
     WS = WebScrapping()
