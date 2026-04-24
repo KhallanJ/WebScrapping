@@ -46,7 +46,7 @@ class WebScrapping:
     
     
     
-    def interactionMenu(self, count_words, text):
+    def interactionMenu(self, text):
         def count_word():
             word = input("What word are you looking for")
             print(f"\nThe word \"{word}\" appears:" , word_counts.get(word, 0) , "times")
@@ -65,17 +65,17 @@ class WebScrapping:
             query_words = query.lower().split()
             
             # Splits the text into chunks, split by periods
-            clean_punctuation = text.replace("!", ".").replace("?", ".").replace(",", ".")
-            sentences = clean_punctuation.split(".")
+            clean_punctuation = text.replace("!", ".").replace("?", ".")
+            sentences_words = clean_punctuation.split(".")
             
             results = []
             ignore_words = ["a", "the", "with", "of", "i", "this", "that", "to", "and", "an", "is", "what"]
-            for sentence in sentences:
+            for sentence in sentences_words:
                 score = 0
                 for word in query_words:
                     if word in ignore_words:
-                        pass
-                    elif word in sentence.lower():
+                        continue
+                    elif word in sentence.split():
                         score += 1   
                         
                 if score > 0:
@@ -83,6 +83,9 @@ class WebScrapping:
                 
             results.sort(key=lambda x: x[1], reverse=True)
             
+            if score == 0:
+                    print("Error 404: Does not exist\n")
+                    
             for result in results[:3]:
                 print("\"", result[0], "\"", "\tScore:", result[1], "\n")
             
@@ -114,8 +117,7 @@ if __name__ == "__main__":
     words = WS.split(text)
     
     word_counts = WS.counting_words(words)
-    # WS.printText(word_counts)
-    WS.interactionMenu(word_counts, text)
+    WS.interactionMenu(text)
     
     
     
