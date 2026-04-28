@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import re
 
 class WebScrapping:
     def extract_text_from_URL(self, url):     
@@ -67,19 +68,26 @@ class WebScrapping:
             # Splits the text into chunks, split by periods
             clean_punctuation = text.replace("!", ".").replace("?", ".").replace(",", " ")
             sentences_words = clean_punctuation.split(".")
-            
+                        
             results = []
             ignore_words = ["a", "the", "with", "of", "i", "this", "that", "to", "and", "an", "is", "what"]
             query_words = [w for w in query_words if w not in ignore_words]
-                    
+                 
+            print(type(sentences_words))
+            # print(sentences_words[:5])   
+            
             for sentence in sentences_words:
+                sentences_words = re.sub(r'[^\w\s]', '', text)
                 matches = 0
                 for word in query_words:
                     if word in sentence.split():
                         matches += 1 
                         
-                          
-                score = matches / len(query_words)
+                score = 0
+                if len(query_words) > 0:          
+                    score = matches / len(query_words)
+                else:
+                    print("Cannot divide by Zero")
        
                 if score > 0:
                     results.append((sentence, score))
@@ -116,13 +124,14 @@ class WebScrapping:
 if __name__ == "__main__":
     WS = WebScrapping()
     
-    text = WS.extract_text_from_URL("https://httpbin.org/html")
+    text = WS.extract_text_from_URL("https://www.britannica.com/topic/LEGO")
     text = WS.to_Lower(text)
     words = WS.split(text)
     
     word_counts = WS.counting_words(words)
     WS.interactionMenu(text)
     
-    
+    #https://www.britannica.com/topic/LEGO
+    #https://httpbin.org/html
     
         
