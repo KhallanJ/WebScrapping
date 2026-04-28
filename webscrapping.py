@@ -46,7 +46,7 @@ class WebScrapping:
     
     
     
-    def interactionMenu(self, count_words, text):
+    def interactionMenu(self, text):
         def count_word():
             word = input("What word are you looking for")
             print(f"\nThe word \"{word}\" appears:" , word_counts.get(word, 0) , "times")
@@ -59,21 +59,47 @@ class WebScrapping:
                 print(f"\nNo. The word \"{word}\" does NOT exist in the website")
 
         
-        def sentence_search():
-            word = input("What word are you looking for? ")
+        def queryLookUp():
+            query = input("Type Your Question Here: ")
+            print("\n")
+            query_words = query.lower().split()
+            
             # Splits the text into chunks, split by periods
-            sentences = text.split(".")
+            clean_punctuation = text.replace("!", ".").replace("?", ".").replace(",", " ")
+            sentences_words = clean_punctuation.split(".")
+            
+            results = []
+            ignore_words = ["a", "the", "with", "of", "i", "this", "that", "to", "and", "an", "is", "what"]
+            query_words = [w for w in query_words if w not in ignore_words]
+                    
+            for sentence in sentences_words:
+                matches = 0
+                for word in query_words:
+                    if word in sentence.split():
+                        matches += 1 
+                        
+                          
+                score = matches / len(query_words)
+       
+                if score > 0:
+                    results.append((sentence, score))
+                
+            results.sort(key=lambda x: x[1], reverse=True)
+            
+            
+            if not results:
+                print("Error 404: Does not exist\n")
+                    
+            for result in results[:3]:
+                print("\"", result[0], "\"", "\tScore:", result[1], "\n")
+            
+                    
     
-            # Then searches each and every sentence (s) in sentences array and looks for the word
-            # if it appears it prints it
-            for s in sentences:
-                if word in s.lower():
-                    print(s.strip(),".")
-        
+
         while True:
             print("\n1. Check word frequency")
             print("2. Check if word exists")
-            print("3. Show sentences containing word")
+            print("3. Ask A Question")
             print("4. Exit")
                         
             choice = input("\nChoose Option: ")
@@ -83,9 +109,9 @@ class WebScrapping:
             elif choice == "2":
                 check_exsistacne()
             elif choice == "3":
-                sentence_search()
+                queryLookUp()
             else:
-                break;
+                break
             
 if __name__ == "__main__":
     WS = WebScrapping()
@@ -95,8 +121,7 @@ if __name__ == "__main__":
     words = WS.split(text)
     
     word_counts = WS.counting_words(words)
-    # WS.printText(word_counts)
-    WS.interactionMenu(word_counts, text)
+    WS.interactionMenu(text)
     
     
     
