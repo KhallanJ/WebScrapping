@@ -65,17 +65,17 @@ class WebScrapping:
             query_words = query.lower().split()
             
             # Splits the text into chunks, split by periods
-            clean_punctuation = text.replace("!", ".").replace("?", ".")
+            clean_punctuation = text.replace("!", ".").replace("?", ".").replace(",", " ")
             sentences_words = clean_punctuation.split(".")
             
             results = []
             ignore_words = ["a", "the", "with", "of", "i", "this", "that", "to", "and", "an", "is", "what"]
+            query_words = [w for w in query_words if w not in ignore_words]
+                    
             for sentence in sentences_words:
                 matches = 0
                 for word in query_words:
-                    if word in ignore_words:
-                        len(query_words) - 1
-                    elif words in sentence.split():
+                    if word in sentence.split():
                         matches += 1 
                         
                           
